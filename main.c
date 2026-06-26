@@ -53,6 +53,9 @@ typedef struct
 } VM;
 
 
+void gc(VM* vm);
+void mark(Object* object);
+
 
 VM* newVM()
 {
@@ -96,13 +99,18 @@ Object* newObject(VM* vm, ObjectType type)
 void pushInt(VM* vm, int intValue)
 {
     Object* object = newObject(vm, OBJ_INT);
+    object->value = intValue;
+    push(vm, object);
 }
 
-void pushPair(VM* vm)
+Object* pushPair(VM* vm)
 {
+    Object* tail = pop(vm);
+    Object* head = pop(vm);
+
     Object* object = newObject(vm, OBJ_PAIR);
-    object->tail = pop(vm);
-    object->head = pop(vm);
+    object->tail = tail;
+    object->head = head;
 
     push(vm, object);
     return object;
@@ -172,7 +180,7 @@ void freeVM(VM* vm)
 
 int main()
 {
-    printf("VM basliyor");
+    printf("VM basliyor \n");
     VM* vm = newVM();
 
     pushInt(vm, 10);
@@ -187,7 +195,7 @@ int main()
     }
     
     freeVM(vm);
-    printf("VM bitti");
+    printf("VM bitti \n");
     return 0;
 }
 
