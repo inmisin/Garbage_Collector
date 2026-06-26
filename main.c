@@ -7,11 +7,16 @@
 #define INITIAL_GC_THERESHOLD 8
 
 
+// veri saklanma durumları
 typedef enum {
-    OBJ_INT,
-    OBJ_PAIR
+    OBJ_INT, // sadece tek bir veri saklma durumu
+    OBJ_PAIR // 2 farklı pointer işaret ediyorsa
 } ObjectType;
 
+
+// optimizasyon
+// eğer düz struct olsaydı hafızada daha fazla yer kaplayacaktı
+// en büyük değer kadar yer ayrılır
 typedef struct sObject {
     unsigned char marked;
     struct sObject* next;
@@ -34,6 +39,8 @@ typedef struct sObject {
 } Object;
 
 
+// simülasyon için gerekli bir yapı
+// bunu hafıza yönetimi yapmak için kullanıyoruz
 typedef struct
 {
     Object* firstObject;
